@@ -1,0 +1,32 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20220207150900
+Username: Aravindh Vishnu
+RunAs User: Aravindh Vishnu
+Configuration Name: 
+Machine: My machine
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./UserParameters.ps1
+Process ID: 10928
+PSVersion: 5.1.19041.1320
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.1320
+BuildVersion: 10.0.19041.1320
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Data\my_workspaces\ExcelToC\log_07022022_150900.txt
+07.02.2022 - 15:09:00 ------------ Start Script  ------------
+07.02.2022 - 15:09:00 C:\Data\my_workspaces\ExcelToC\UserParameters.ps1
+07.02.2022 - 15:09:00 Export XML data from the Excel file
+07.02.2022 - 15:09:02 Copy XML data to memory
+07.02.2022 - 15:09:02 Create Header file
+07.02.2022 - 15:09:03 Create Source file
+07.02.2022 - 15:09:03 Delete XML file
+07.02.2022 - 15:09:03 Script execution time: 2831 ms
+07.02.2022 - 15:09:03 ------------ Stop Script  ------------
+**********************
+Windows PowerShell transcript end
+End time: 20220207150903
+**********************

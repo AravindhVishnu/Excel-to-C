@@ -1,0 +1,461 @@
+# Description: This script exports the HMI text resources data in an Excel file
+# to an XML file. Then the XML data is imported to memory and is parsed to generate
+# a C source and header file. The generated C code can be used in an HMI module 
+# implementation for an embedded device.
+
+# Start the stop watch used to measure the script execution time
+try 
+{
+	$StopWatch = New-Object System.Diagnostics.Stopwatch
+	$StopWatch.Start()
+}
+catch
+{
+	Write-Log 'Error when starting the stop watch' $True
+	Write-Log $Error.ScriptStackTrace $True
+}
+
+# Stop running the script in case there is an error
+$ErrorActionPreference = "Stop"
+
+# Function used to output the log message
+function Write-Log([string]$string, [bool]$isError) 
+{
+	$dateTimeNow = Get-Date -Format "dd.MM.yyyy - HH:mm:ss"
+	$outStr = "" + $dateTimeNow + " " + $string
+	if ($isError) 
+	{
+		Write-Error $outStr
+	}
+	else 
+	{
+		Write-Output $outStr
+	}
+}
+
+# Function used to get the script name
+function Get-ScriptName 
+{
+	if ($null -ne $hostinvocation) 
+	{
+		$hostinvocation.MyCommand.Path
+	}
+	else 
+	{
+		$script:MyInvocation.MyCommand.Path
+	}
+}
+[string]$ScriptName = Get-ScriptName
+$ScriptNameLeaf = Split-Path -Path $ScriptName -Leaf
+
+Push-Location
+
+$ScriptAuthor = "Aravindh Vishnu"
+$ScriptRevisionNbr = 1
+$ScriptCreationTime = (Get-Item "UserParameters.ps1").CreationTime
+$ScriptLastWriteTime = (Get-Item "UserParameters.ps1").LastWriteTime
+
+# Set file paths
+$SourceFilePath = (Get-Location).Path + "\UserParameters.c" 
+$HeaderFilePath = (Get-Location).Path + "\UserParameters.h"
+$ExcelFilePath = (Get-Location).Path + "\UserParameters.xlsx"
+$XmlFilePath = (Get-Location).Path + "\UserParameters.xml"
+
+# Set XML mapping name
+$XmlMapping = "parameters_Map"
+
+# Delete all previous log files
+Remove-Item -Path "log*.txt"
+
+$LogDateTimeNow = Get-Date -Format "_ddMMyyyy_HHmmss"
+$LogFilePath = (Get-Location).Path + "\log" + $LogDateTimeNow + ".txt" 
+
+# Start log
+Start-Transcript -path $LogFilePath -Force
+
+Write-Log "------------ Start Script  ------------" $False
+
+Write-Log $ScriptName $False
+
+# Stop the script in case the Excel file cannot be found
+if ((Test-Path -Path $ExcelFilePath) -eq $False) 
+{
+	Write-Log 'The Excel file does not exist' $True
+	Write-Log $Error.ScriptStackTrace $True
+}
+
+# In case there is an XML file already, then delete it
+if ((Test-Path -Path $XmlFilePath) -eq $True) 
+{
+	Write-Log 'Deleting the current XML file' $False
+	Remove-Item $XmlFilePath
+}
+
+Write-Log "Export XML data from the Excel file" $False
+
+try 
+{
+	# Export XML data from the Excel file
+	$Excel = New-Object -Com Excel.Application
+	$Excel.Visible = $false
+	$WorkBook = $Excel.Workbooks.Open($ExcelFilePath)
+	$WorkBook.XmlMaps($XmlMapping).Export($XmlFilePath) | Out-Null
+
+	# Get the Excel workbook built-in properties and store them in a hash table
+	$Binding = "System.Reflection.BindingFlags" -as [type]
+	$ObjectProperties = "Title", "Author", "Revision Number", "Creation Date", "Last Save Time"
+	$Select += $ObjectProperties	
+
+	$Properties = $WorkBook.BuiltInDocumentProperties
+	$HashTable = @{}
+	ForEach ($Property in $ObjectProperties) 
+	{   
+		$DocProperties = [System.__ComObject].InvokeMember("item", $Binding::GetProperty, $null, $Properties, $Property)
+		Try 
+		{
+			$Value = [System.__ComObject].InvokeMember("value", $binding::GetProperty, $null, $DocProperties, $null)
+		}
+		Catch 
+		{
+			$Value = $null
+		}
+		$HashTable.Add($Property, $Value)
+	}
+	
+	# Close the work book and release the com objects
+	$WorkBook.Close()
+	[System.Runtime.InteropServices.Marshal]::ReleaseComObject($Properties) | Out-Null
+	[System.Runtime.InteropServices.Marshal]::ReleaseComObject($WorkBook) | Out-Null
+	$Excel.Quit()
+}
+catch 
+{
+	Write-Log 'Error when opening Excel and exporting the XML data'  $True
+	Write-Log $Error  $True
+	Write-Log $Error.ScriptStackTrace  $True
+}
+
+# Stop the script in case the XML file cannot be found
+if ((Test-Path -Path $XmlFilePath) -eq $False) 
+{
+	Write-Log 'The XML file does not exist'  $True
+	Write-Log $Error.ScriptStackTrace  $True
+}
+
+Write-Log "Copy XML data to memory" $False
+
+try 
+{
+	# Copy XML data to memory
+	[xml]$XmlData = Get-Content -Path $XmlFilePath
+}
+catch 
+{
+	Write-Log 'Error when importing the XML data' $True
+	Write-Log $Error $True
+	Write-Log $Error.ScriptStackTrace	$True
+}
+
+Write-Log "Create Header file" $False
+
+$indent = "    "
+$emptyRow = ""
+$dateTimeScript = Get-Date -Format "dd.MM.yyyy - HH:mm:ss"
+
+$header = @()
+$header += "/*******************************************************************************"
+$header += $emptyRow
+$header += " *  File name: UserParameters.h"
+$header += " *  File creation date/time: " + $dateTimeScript
+$header += " *  Description: User parameters with related text resources and meta data"
+$header += $emptyRow
+$header += " *  IMPORTANT"
+$header += " *  DO NOT EDIT THIS FILE!"
+$header += " *  This file is generated from an Excel document by a Powershell script."
+$header += $emptyRow
+$header += " *  Excel document: " + $HashTable["Title"]
+$header += " *  Author: " + $HashTable["Author"]
+$header += " *  Revision Number: " + $HashTable["Revision Number"]
+$header += " *  Creation Time: " + $HashTable["Creation Date"]
+$header += " *  Last Save Time: " + $HashTable["Last Save Time"]
+$header += $emptyRow
+$header += " *  Powershell script: " + $ScriptNameLeaf
+$header += " *  Author: " + $ScriptAuthor
+$header += " *  Revision Number: " + $ScriptRevisionNbr
+$header += " *  Creation Time: " + $ScriptCreationTime
+$header += " *  Last Save Time: " + $ScriptLastWriteTime
+$header += $emptyRow
+$header += " *******************************************************************************"
+$header += " */"
+$header += $emptyRow
+$header += '#include "stdint.h"'
+$header += '#include "stdlib.h"'
+$header += '#include "string.h"'
+$header += $emptyRow
+$header += "typedef enum unitType"
+$header += "{"
+$header += $indent + "NO_UNIT = 0,"
+$header += $indent + "MS,"
+$header += $indent + "S,"
+$header += $indent + "RPM,"
+$header += $indent + "PERCENT,"
+$header += $indent + "NBR_OF_UNITS"
+$header += "} unit;"
+$header += $emptyRow
+$header += "typedef enum dataType"
+$header += "{"
+$header += $indent + "TYPE_UINT8 = 0,"
+$header += $indent + "TYPE_INT8,"
+$header += $indent + "TYPE_UINT16,"
+$header += $indent + "TYPE_INT16,"
+$header += $indent + "TYPE_UINT32,"
+$header += $indent + "TYPE_INT32,"
+$header += $indent + "TYPE_FLOAT32,"
+$header += $indent + "TYPE_FLOAT64,"
+$header += $indent + "NBR_OF_DATATYPES"
+$header += "} data;"
+$header += $emptyRow
+$header += "typedef struct"
+$header += "{"
+$header += $indent + "char const * const shortName;"
+$header += $indent + "uint8_t block;"
+$header += $indent + "uint8_t field;"
+$header += $indent + "char const * const text[5];"
+$header += $indent + "unit unitType;"
+$header += $indent + "data dataType;"
+$header += $indent + "int32_t defaultValue;"
+$header += $indent + "int32_t minValue;"
+$header += $indent + "int32_t maxValue;"
+$header += $indent + "uint8_t nbrOfDecimals;"
+$header += "} USER_PARAM_TYPE;"
+$header += $emptyRow
+
+$loopCnt = 0
+$generateTrueCnt = 0
+$generateArray = $xmlData.Parameters.Parameter.generate
+$shortNameArray = $xmlData.Parameters.Parameter.short_name
+ForEach ($shortName in $shortNameArray) 
+{
+	# Check if the parameter shall be generated
+	if ($generateArray[$loopCnt] -eq "true") 
+	{
+		$header += "#define " + $shortName + " " + $generateTrueCnt
+		$generateTrueCnt += 1
+	}
+	$loopCnt += 1
+}
+$header += "#define TOTAL_PARAMETERS " + $generateTrueCnt
+$header += $emptyRow
+$header += "extern const USER_PARAM_TYPE userParameters[TOTAL_PARAMETERS];"
+
+try 
+{
+	# Create the header file
+	$header | Set-Content $HeaderFilePath
+}
+catch
+{
+	Write-Log 'Error when creating the header file' $True
+	Write-Log $Error.ScriptStackTrace $True
+}
+
+# Stop the script in case the header file cannot be found
+if ((Test-Path -Path $HeaderFilePath) -eq $False) 
+{
+	Write-Log 'The header file does not exist' $True
+	Write-Log $Error.ScriptStackTrace $True
+}
+
+Write-Log "Create Source file" $False
+
+$source = @()
+$source += "/*******************************************************************************"
+$source += $emptyRow
+$source += " *  File name: UserParameters.c"
+$source += " *  File creation date/time: " + $dateTimeScript
+$source += " *  Description: User parameters with related text resources and meta data"
+$source += $emptyRow
+$source += " *  IMPORTANT"
+$source += " *  DO NOT EDIT THIS FILE!"
+$source += " *  This file is generated from an Excel document by a Powershell script."
+$source += $emptyRow
+$source += " *  Excel document: " + $HashTable["Title"]
+$source += " *  Author: " + $HashTable["Author"]
+$source += " *  Revision Number: " + $HashTable["Revision Number"]
+$source += " *  Creation Time: " + $HashTable["Creation Date"]
+$source += " *  Last Save Time: " + $HashTable["Last Save Time"]
+$source += $emptyRow
+$source += " *  Powershell script: " + $ScriptNameLeaf
+$source += " *  Author: " + $ScriptAuthor
+$source += " *  Revision Number: " + $ScriptRevisionNbr
+$source += " *  Creation Time: " + $ScriptCreationTime
+$source += " *  Last Save Time: " + $ScriptLastWriteTime
+$source += $emptyRow
+$source += " *******************************************************************************"
+$source += " */"
+$source += $emptyRow
+$source += '#include "UserParameters.h"'
+$source += $emptyRow
+$source += "const USER_PARAM_TYPE userParameters[TOTAL_PARAMETERS] ="
+$source += "{"
+
+for ($i = 0 ; $i -ne $xmlData.Parameters.Parameter.Count; $i++) 
+{
+	# Check if the parameter shall be generated
+	if ($xmlData.Parameters.Parameter.generate[$i] -eq "true") 
+	{
+		$source += $indent + "{"
+		$source += $indent + $indent + '"' + $xmlData.Parameters.Parameter.short_name[$i] + '"' + ","
+		$source += $indent + $indent + $xmlData.Parameters.Parameter.block[$i] + ","
+		$source += $indent + $indent + $xmlData.Parameters.Parameter.field[$i] + ","
+		$source += $indent + $indent + "{"
+		$source += $indent + $indent + $indent + '"' + $xmlData.Parameters.Parameter.English[$i] + '"' + ","
+		$source += $indent + $indent + $indent + '"' + $xmlData.Parameters.Parameter.Swedish[$i] + '"' + ","
+		$source += $indent + $indent + $indent + '"' + $xmlData.Parameters.Parameter.German[$i] + '"' + ","
+		$source += $indent + $indent + $indent + '"' + $xmlData.Parameters.Parameter.French[$i] + '"' + ","
+		$source += $indent + $indent + $indent + '"' + $xmlData.Parameters.Parameter.Spanish[$i] + '"'
+		$source += $indent + $indent + "},"
+
+		$unit = ""
+		if ($xmlData.Parameters.Parameter.unit[$i] -eq "NA") 
+		{
+			$unit = "(unit)0"
+		}
+		else 
+		{
+			$unit = $xmlData.Parameters.Parameter.unit[$i]
+		}
+		$source += $indent + $indent + $unit + ","
+
+		$type = ""
+		if ($xmlData.Parameters.Parameter.type[$i] -eq "NA") 
+		{
+			$type = "(data)0"
+		}
+		else 
+		{
+			$type = $xmlData.Parameters.Parameter.type[$i]
+		}
+		$source += $indent + $indent + $type + ","
+
+		$defaultValue = ""
+		if ($xmlData.Parameters.Parameter.default_value[$i] -eq "NA") 
+		{
+			$defaultValue = "0"
+		}
+		else 
+		{
+			$defaultValue = $xmlData.Parameters.Parameter.default_value[$i]
+		}
+		$source += $indent + $indent + $defaultValue + ","
+
+		$minValue = ""
+		if ($xmlData.Parameters.Parameter.min_value[$i] -eq "NA") 
+		{
+			$minValue = "0"
+		}
+		else 
+		{
+			$minValue = $xmlData.Parameters.Parameter.min_value[$i]
+		}
+		$source += $indent + $indent + $minValue + ","
+
+		$maxValue = ""
+		if ($xmlData.Parameters.Parameter.max_value[$i] -eq "NA") 
+		{
+			$maxValue = "0"
+		}
+		else 
+		{
+			$maxValue = $xmlData.Parameters.Parameter.max_value[$i]
+		}
+		$source += $indent + $indent + $maxValue + ","
+
+		$nbrOfDecimals = ""
+		if ($xmlData.Parameters.Parameter.nbr_of_decimals[$i] -eq "NA") 
+		{
+			$nbrOfDecimals = "0"
+		}
+		else 
+		{
+			$nbrOfDecimals = $xmlData.Parameters.Parameter.nbr_of_decimals[$i]
+		}
+		$source += $indent + $indent + $nbrOfDecimals
+
+		if ($i -eq ($xmlData.Parameters.Parameter.Count -1))
+		{
+			$source += $indent + "}"
+		}
+		else 
+		{
+			$source += $indent + "},"
+		}
+	}
+}
+
+$source += "};"
+
+try 
+{
+	# Create the source file
+	$source | Set-Content $SourceFilePath
+}
+catch
+{
+	Write-Log 'Error when creating the source file' $True
+	Write-Log $Error.ScriptStackTrace $True
+}
+
+# Stop the script in case the source file cannot be found
+if ((Test-Path -Path $SourceFilePath) -eq $False) 
+{
+	Write-Log 'The source file does not exist' $True
+	Write-Log $Error.ScriptStackTrace $True
+}
+
+Write-Log "Delete XML file" $False
+
+try 
+{
+	# Delete the XML file, since it is no longer needed
+	Remove-Item $XmlFilePath
+}
+catch 
+{
+	Write-Log 'It is not possible to delete the XML file' $True
+	Write-Log $Error.ScriptStackTrace $True	
+}
+
+# Stop the script in case the XML file was not deleted
+if ((Test-Path -Path $XmlFilePath) -eq $True) 
+{
+	Write-Log 'The XML file was not deleted' $True
+	Write-Log $Error.ScriptStackTrace $True
+}
+
+$Error.Clear()
+
+try 
+{
+	$StopWatch.Stop()
+	$MilliSeconds = $StopWatch.ElapsedMilliSeconds
+	$execTimeString = "Script execution time: " + $MilliSeconds + " ms"
+}
+catch
+{
+	Write-Log 'Error when stopping the stop watch' $True
+	Write-Log $Error.ScriptStackTrace $True
+}
+
+Write-Log $execTimeString $False
+
+Write-Log "------------ Stop Script  ------------" $False
+
+# Stop log
+Stop-Transcript
+
+Pop-Location
+
+# Enforce garbage collection
+[System.GC]::Collect()
+[System.GC]::WaitForPendingFinalizers()

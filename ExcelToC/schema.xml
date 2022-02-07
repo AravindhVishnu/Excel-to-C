@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<parameters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<parameter>
+		<short_name>START_STOP_MODE_BLOCK</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>0</field>
+		<English>Start/Stop mode</English>
+		<Swedish>Start/Stopp funktion</Swedish>
+		<German>Start/Stopp-Modus</German>
+		<French>Mode démarrage/arrêt</French>
+		<Spanish>Modo de inicio/parada</Spanish>
+		<unit>NA</unit>
+		<type>NA</type>
+		<default_value>NA</default_value>
+		<min_value>NA</min_value>
+		<max_value>NA</max_value>
+		<nbr_of_decimals>NA</nbr_of_decimals>
+	</parameter>
+    <parameter>
+	   <short_name>START_MODE</short_name>
+	   <generate>true</generate>
+	   <block>21</block>
+	   <field>1</field>
+       <English>Start mode</English>
+       <Swedish>Startfunktion</Swedish>
+       <German>Startmodus</German>
+	   <French>Mode de démarrage</French>
+	   <Spanish>Modo de inicio</Spanish>
+	   <unit>NO_UNIT</unit>
+	   <type>UINT8</type>
+	   <default_value>2</default_value>
+	   <min_value>0U</min_value>
+	   <max_value>2</max_value>
+	   <nbr_of_decimals>0</nbr_of_decimals>
+    </parameter>
+</parameters>

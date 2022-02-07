@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<parameters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<parameter>
+		<short_name>START_STOP_MODE_BLOCK</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>0</field>
+		<English>Start/Stop mode</English>
+		<Swedish>Start/Stopp funktion</Swedish>
+		<German>Start/Stopp-Modus</German>
+		<French>Mode démarrage/arrêt</French>
+		<Spanish>Modo de inicio/parada</Spanish>
+		<unit>NA</unit>
+		<type>NA</type>
+		<default_value>NA</default_value>
+		<min_value>NA</min_value>
+		<max_value>NA</max_value>
+		<nbr_of_decimals>NA</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>START_MODE</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>1</field>
+		<English>Start mode</English>
+		<Swedish>Startfunktion</Swedish>
+		<German>Startmodus</German>
+		<French>Mode de démarrage</French>
+		<Spanish>Modo de inicio</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>2</default_value>
+		<min_value>0</min_value>
+		<max_value>2</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>MAG_TIME</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>2</field>
+		<English>Magnetization time</English>
+		<Swedish>Magnetiseringstiden</Swedish>
+		<German>Magnetisierungszeit</German>
+		<French>Temps de magnétisation</French>
+		<Spanish>Tiempo de magnetización</Spanish>
+		<unit>MS</unit>
+		<type>TYPE_UINT16</type>
+		<default_value>500</default_value>
+		<min_value>0</min_value>
+		<max_value>10000</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>STOP_MODE</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>3</field>
+		<English>Stop mode</English>
+		<Swedish>Stoppfunktion</Swedish>
+		<German>Stop-modus</German>
+		<French>Mode d'arrêt</French>
+		<Spanish>Modo de parada</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>2</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>E_STOP_MODE</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>4</field>
+		<English>Emergency stop mode</English>
+		<Swedish>Nödstoppfunktion</Swedish>
+		<German>Not-Aus-Modus</German>
+		<French>Mode d'arrêt d'urgence</French>
+		<Spanish>Modo de parada de emergencia</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>2</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>E_STOP_SOURCE</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>5</field>
+		<English>Emergency stop source</English>
+		<Swedish>Nödstoppskälla</Swedish>
+		<German>Not-Aus-Quelle</German>
+		<French>Source d'arrêt d'urgence</French>
+		<Spanish>Fuente de parada de emergencia</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>1</default_value>
+		<min_value>0</min_value>
+		<max_value>12</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>ZERO_SPEED_LIMIT</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>6</field>
+		<English>Zero speed limit</English>
+		<Swedish>Stillaståendenivå</Swedish>
+		<German>Geschwindigkeitsbegrenzung Null</German>
+		<French>Limite de vitesse nulle</French>
+		<Spanish>Límite de velocidad cero</Spanish>
+		<unit>RPM</unit>
+		<type>TYPE_FLOAT32</type>
+		<default_value>30</default_value>
+		<min_value>0</min_value>
+		<max_value>30000</max_value>
+		<nbr_of_decimals>2</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>ZERO_SPEED_DELAY</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>7</field>
+		<English>Zero speed delay</English>
+		<Swedish>Stillastående fördröjning</Swedish>
+		<German>Nullgeschwindigkeitsverzögerung</German>
+		<French>Délai de vitesse nulle</French>
+		<Spanish>Retardo de velocidad cero</Spanish>
+		<unit>MS</unit>
+		<type>TYPE_UINT16</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>30000</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>DC_I_CTRL</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>8</field>
+		<English>DC current control</English>
+		<Swedish>DC strömkontroll</Swedish>
+		<German>DC-Stromregelung</German>
+		<French>Contrôle du courant continu</French>
+		<Spanish>Control de corriente continua</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT16</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>65535</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>DC_HOLD_SPEED</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>9</field>
+		<English>DC hold speed</English>
+		<Swedish>DC håll varvtal</Swedish>
+		<German>DC-Haltegeschwindigkeit</German>
+		<French>Vitesse de maintien CC</French>
+		<Spanish>Velocidad de mantenimiento de CC</Spanish>
+		<unit>RPM</unit>
+		<type>TYPE_FLOAT32</type>
+		<default_value>5</default_value>
+		<min_value>0</min_value>
+		<max_value>1000</max_value>
+		<nbr_of_decimals>1</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>DC_I_REF</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>10</field>
+		<English>DC current reference</English>
+		<Swedish>DC strömreferens</Swedish>
+		<German>Gleichstromreferenz</German>
+		<French>Référence de courant continu</French>
+		<Spanish>Referencia de corriente CC</Spanish>
+		<unit>PERCENT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>30</default_value>
+		<min_value>0</min_value>
+		<max_value>100</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>POST_MAG_TIME</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>11</field>
+		<English>Post magnetization time</English>
+		<Swedish>Eftermagnetiseringstid</Swedish>
+		<German>Nachmagnetisierungszeit</German>
+		<French>Temps de post magnétisation</French>
+		<Spanish>Tiempo posterior a la magnetización</Spanish>
+		<unit>MS</unit>
+		<type>TYPE_UINT16</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>30000</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>AUTOPHASING_MODE</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>13</field>
+		<English>Autophasing mode</English>
+		<Swedish>Autofasfunktion</Swedish>
+		<German>Autophasing-Modus</German>
+		<French>Mode de mise en phase automatique</French>
+		<Spanish>Modo de puesta en fase automática</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>2</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>AUTO_RESTART_TIME</short_name>
+		<generate>true</generate>
+		<block>21</block>
+		<field>18</field>
+		<English>Auto restart time</English>
+		<Swedish>Automatisk omstartstid</Swedish>
+		<German>Automatische Neustartzeit</German>
+		<French>Temps de redémarrage automatique</French>
+		<Spanish>Tiempo de reinicio automático</Spanish>
+		<unit>S</unit>
+		<type>TYPE_FLOAT32</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>5</max_value>
+		<nbr_of_decimals>1</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>OPERATION_MODE_BLOCK</short_name>
+		<generate>true</generate>
+		<block>19</block>
+		<field>0</field>
+		<English>Operation mode</English>
+		<Swedish>Driftsfunktion</Swedish>
+		<German>Betriebsmodus</German>
+		<French>Mode de fonctionnement</French>
+		<Spanish>Modo de operación</Spanish>
+		<unit>NA</unit>
+		<type>NA</type>
+		<default_value>NA</default_value>
+		<min_value>NA</min_value>
+		<max_value>NA</max_value>
+		<nbr_of_decimals>NA</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>ACT_OP_MODE</short_name>
+		<generate>true</generate>
+		<block>19</block>
+		<field>1</field>
+		<English>Actual operation mode</English>
+		<Swedish>Aktuell driftsfunktion</Swedish>
+		<German>Aktueller Betriebsmodus</German>
+		<French>Mode de fonctionnement réel</French>
+		<Spanish>Modo de operación real</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>1</default_value>
+		<min_value>1</min_value>
+		<max_value>20</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>EXT1_EXT2_SEL</short_name>
+		<generate>true</generate>
+		<block>19</block>
+		<field>11</field>
+		<English>Ext1/EXT2 selection</English>
+		<Swedish>Ext1/EXT2 val</Swedish>
+		<German>Ext1/EXT2-Auswahl</German>
+		<French>Sélection Ext1/EXT2</French>
+		<Spanish>Selección Ext1/EXT2</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>12</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>EXT1_CTRL_MODE_1</short_name>
+		<generate>true</generate>
+		<block>19</block>
+		<field>12</field>
+		<English>Ext1 control mode 1</English>
+		<Swedish>Ext1 kontrollfunktion 1</Swedish>
+		<German>Ext1 Steuermodus 1</German>
+		<French>Ext1 mode de contrôle 1</French>
+		<Spanish>Ext1 modo de control 1</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>2</default_value>
+		<min_value>1</min_value>
+		<max_value>6</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>EXT2_CTRL_MODE_1</short_name>
+		<generate>true</generate>
+		<block>19</block>
+		<field>14</field>
+		<English>Ext2 control mode 1</English>
+		<Swedish>Ext2 kontrollfunktion 1</Swedish>
+		<German>Ext2 Steuermodus 1</German>
+		<French>Ext2 mode de contrôle 1</French>
+		<Spanish>Ext2 modo de control 1</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>2</default_value>
+		<min_value>1</min_value>
+		<max_value>6</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>LOCAL_CTRL_MODE</short_name>
+		<generate>true</generate>
+		<block>19</block>
+		<field>16</field>
+		<English>Local control mode</English>
+		<Swedish>Lokal kontrollfunktion</Swedish>
+		<German>Lokaler Steuermodus</German>
+		<French>Mode de contrôle local</French>
+		<Spanish>Modo de control local</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>1</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>LOCAL_CTRL_DISABLE</short_name>
+		<generate>true</generate>
+		<block>19</block>
+		<field>17</field>
+		<English>Local control disable</English>
+		<Swedish>Lokal kontrollavstängning</Swedish>
+		<German>Deaktivierung der lokalen Steuerung</German>
+		<French>Désactivation de la commande locale</French>
+		<Spanish>Inhabilitar control local</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>0</default_value>
+		<min_value>0</min_value>
+		<max_value>1</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+	<parameter>
+		<short_name>SCALAR_CTRL_REF_UNIT</short_name>
+		<generate>true</generate>
+		<block>19</block>
+		<field>20</field>
+		<English>Scalar control reference unit</English>
+		<Swedish>Skalär kontrollreferensenhet</Swedish>
+		<German>Referenzeinheit für die Skalarsteuerung</German>
+		<French>Unité de référence de contrôle scalaire</French>
+		<Spanish>Unidad de referencia de control escalar</Spanish>
+		<unit>NO_UNIT</unit>
+		<type>TYPE_UINT8</type>
+		<default_value>1</default_value>
+		<min_value>0</min_value>
+		<max_value>1</max_value>
+		<nbr_of_decimals>0</nbr_of_decimals>
+	</parameter>
+</parameters>
