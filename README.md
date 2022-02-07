@@ -16,7 +16,7 @@ such as extracting the built-in properties of the Excel file and posting them in
 generated C code. Also measuring the script execution time and creating a log file.
 As an example, I have used some of the user parameters found in the ABB ACS880 AC Drive.
 
-Tools: Powershell 5.1, Visual Studio Code (with the Powershell extension)
+Tools: Powershell 5.1, Excel, Visual Studio Code (with the Powershell extension)
 
 Instructions: The user parameters and their related data are stored in the
 UserParameters.xlsx file. 
