@@ -3,6 +3,9 @@
 # a C source and header file. The generated C code can be used in an HMI module 
 # implementation for an embedded device.
 
+# Stop running the script in case there is an error
+$ErrorActionPreference = "Stop"
+
 # Start the stop watch used to measure the script execution time
 try 
 {
@@ -14,9 +17,6 @@ catch
 	Write-Log 'Error when starting the stop watch' $True
 	Write-Log $Error.ScriptStackTrace $True
 }
-
-# Stop running the script in case there is an error
-$ErrorActionPreference = "Stop"
 
 # Function used to output the log message
 function Write-Log([string]$string, [bool]$isError) 
