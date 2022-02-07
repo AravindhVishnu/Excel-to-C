@@ -3,7 +3,7 @@ Convert Excel text resources and meta data to C code using a Powershell script
 
 Background: It is convenient to store an embedded device's HMI user parameter info
 in an Excel file. This info can be the language text resources and meta data.
-With Excel, ii is relatively easy to get an overview of all the user parameter data.
+With Excel, it is relatively easy to get an overview of all the user parameter data.
 But it is required for this data to somehow be converted to C/C++ code and compiled
 and be part of the executable firmware image.
 
@@ -26,6 +26,6 @@ powershell -ExecutionPolicy Bypass -File pathToTheScript
 
 Debugging the Powershell script can be done in the Visual Studio Code environment.
 
-Note: The UserParameters.ps1 Powershell script has only been tested in the Windows 10.
+Note: The UserParameters.ps1 Powershell script has only been tested in Windows 10.
 
 I have tested compiling the generated code with the Visual Studio 2022 C++/C compiler.
