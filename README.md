@@ -19,8 +19,11 @@ As an example, I have used some of the user parameters found in the ABB ACS880 A
 Tools: Powershell 5.1, Visual Studio Code (with the Powershell extension)
 
 Instructions: The user parameters and their related data are stored in the
-UserParameters.xlsx file. Use this command in the Powershell console:
+UserParameters.xlsx file. 
+
+Use this command in the Powershell console:
 powershell -ExecutionPolicy Bypass -File pathToTheScript
+
 Debugging the Powershell script can be done in the Visual Studio Code environment.
 
 Note: The UserParameters.ps1 Powershell script has only been tested in the Windows 10.
