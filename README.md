@@ -26,5 +26,5 @@ powershell -ExecutionPolicy Bypass -File pathToTheScript
 
 Debugging the Powershell script can be done in the Visual Studio Code environment.
 
-Note: The UserParameters.ps1 Powershell script has only been tested in Windows 10.
+Note: The UserParameters.ps1 Powershell script has only been tested on Windows 10.
 I have tested compiling the generated code with the Visual Studio 2022 C++/C compiler.
