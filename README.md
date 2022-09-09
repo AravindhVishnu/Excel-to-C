@@ -12,8 +12,8 @@ source and header file. This C code can later be used by the HMI module part of 
 embedded SW. The Powershell script first exports the Excel user parameter data to an
 XML file. Then using Powershell's built-in XML functionality, the XML data is copied to
 memory and subsequently parsed when generating the C code. The script does other things
-such as extracting the built-in properties of the Excel file and posting them in the
-generated C code. Also measuring the script execution time and creating a log file.
+such as extracting the built-in properties of the Excel file and posting them as comments 
+in the generated C code. Also measuring the script execution time and creating a log file.
 As an example, I have used some of the user parameters found in the ABB ACS880 AC Drive.
 
 Tools: Powershell 5.1, Excel, Visual Studio Code (with the Powershell extension)
